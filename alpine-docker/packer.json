@@ -1,0 +1,39 @@
+{
+  "builders": [
+    {
+      "vm_name": "alpine-docker.qcow2",
+      "type": "qemu",
+      "accelerator": "kvm",
+      "headless": "false",
+
+      "iso_checksum_type": "sha256",
+      "iso_checksum": "d848fda73b8af3cc1a147320aba50e670f2eaeb1ff7fcf355eef9821f92219ca",
+      "iso_url": "https://nl.alpinelinux.org/alpine/v3.6/releases/x86_64/alpine-virt-3.6.0-x86_64.iso",
+
+      "disk_size": 8000,
+      "format": "qcow2",
+
+      "http_directory": "httpdir",
+      "output_directory": "images",
+
+      "ssh_username": "root",
+      "ssh_password": "vmpass",
+      "ssh_wait_timeout": "1h",
+      "shutdown_command": "/sbin/poweroff",
+
+      "boot_wait": "10s",
+      "boot_command": [
+        "root<enter><wait>",
+        "ip link set eth0 up && udhcpc -i eth0 &&<enter>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/setup.sh &&<enter>",
+        "chmod +x setup.sh && ./setup.sh<enter>"
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "scripts/install-docker.sh"
+    }
+  ]
+}
