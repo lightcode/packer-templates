@@ -27,6 +27,12 @@
         "ip link set eth0 up && udhcpc -i eth0 &&<enter>",
         "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/setup.sh &&<enter>",
         "chmod +x setup.sh && ./setup.sh<enter>"
+      ],
+
+      "qemuargs": [
+        ["-device", "virtio-net,netdev=user.0"],
+        ["-object","rng-random,id=objrng0,filename=/dev/urandom"],
+        ["-device", "virtio-rng-pci,rng=objrng0,id=rng0,bus=pci.0,addr=0x10"]
       ]
     }
   ],
