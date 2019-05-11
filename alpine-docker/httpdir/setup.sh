@@ -5,6 +5,7 @@ set -x
 setup-keymap us us
 
 setup-interfaces -i <<EOF
+auto lo
 iface lo inet loopback
 
 auto eth0
